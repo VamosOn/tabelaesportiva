@@ -38,7 +38,6 @@
     margin: 20px auto;
   }
 
-  /* ===== META ===== */
   .meta-card {
     background: white;
     border-radius: var(--radius);
@@ -51,12 +50,6 @@
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
-  }
-
-  .meta-top span {
-    color: var(--cor-primaria);
-    font-weight: bold;
-    font-size: 1.1rem;
   }
 
   .progress-bar {
@@ -74,13 +67,6 @@
     transition: width 0.4s ease;
   }
 
-  .meta-restante {
-    font-size: 13px;
-    color: var(--cor-sucesso);
-    margin-top: 6px;
-  }
-
-  /* ===== FORM ===== */
   form {
     background: white;
     border-radius: var(--radius);
@@ -90,12 +76,7 @@
     gap: 12px;
   }
 
-  label {
-    font-size: 13px;
-    font-weight: 600;
-  }
-
-  input {
+  input, button {
     width: 100%;
     padding: 10px;
     border-radius: var(--radius);
@@ -105,12 +86,9 @@
 
   button {
     grid-column: 1 / -1;
-    padding: 14px;
-    border: none;
-    border-radius: var(--radius);
-    font-size: 16px;
-    color: white;
     background: var(--cor-primaria);
+    color: white;
+    border: none;
     font-weight: 500;
     cursor: pointer;
     transition: background 0.2s;
@@ -120,7 +98,6 @@
     background: #0056d2;
   }
 
-  /* ===== TABELA ===== */
   table {
     width: 100%;
     border-collapse: collapse;
@@ -145,10 +122,6 @@
     font-size: 14px;
   }
 
-  tr:hover {
-    background: #f8fafc;
-  }
-
   .btn {
     border: none;
     border-radius: 6px;
@@ -159,18 +132,10 @@
     cursor: pointer;
   }
 
-  .btn-ganhou {
-    background: var(--cor-sucesso);
-  }
-
-  .btn-perdeu {
-    background: #facc15;
-    color: #000;
-  }
-
-  .btn-remove {
-    background: var(--cor-perigo);
-  }
+  .btn-ganhou { background: var(--cor-sucesso); }
+  .btn-perdeu { background: #facc15; color: #000; }
+  .btn-remove { background: var(--cor-perigo); }
+  .btn-imagem { background: #0ea5e9; }
 
   .btn-reset {
     background: var(--cor-perigo);
@@ -180,26 +145,9 @@
     font-weight: bold;
   }
 
-  /* ===== MOBILE ===== */
   @media (max-width: 600px) {
-    form {
-      grid-template-columns: 1fr;
-    }
-
-    th, td {
-      font-size: 12px;
-      padding: 8px;
-    }
-
-    button {
-      padding: 12px;
-      font-size: 15px;
-    }
-
-    .btn {
-      font-size: 12px;
-      padding: 6px 6px;
-    }
+    form { grid-template-columns: 1fr; }
+    th, td { font-size: 12px; }
   }
 </style>
 </head>
@@ -208,62 +156,33 @@
   <header>⚽ Entradas Esportivas</header>
 
   <main>
-    <!-- Painel de Meta -->
     <div class="meta-card">
       <div class="meta-top">
         <h3>Meta:</h3>
         <span id="valorMeta">R$ 0,00</span>
       </div>
       <div class="progress-bar"><div id="barraProgresso" class="progress"></div></div>
-      <div class="meta-restante" id="metaRestante">Faltam R$ 0,00</div>
-      <div class="meta-restante" style="color:#1e40af;">Banca Atual: <strong id="bancaAtual">R$ 0,00</strong></div>
+      <div id="metaRestante">Faltam R$ 0,00</div>
+      <div style="color:#1e40af;">Banca Atual: <strong id="bancaAtual">R$ 0,00</strong></div>
       <button class="btn-reset" id="resetarPainel">🔄 Resetar Painel</button>
     </div>
 
-    <!-- Formulário -->
     <form id="entradaForm">
-      <div>
-        <label for="jogo">Jogo</label>
-        <input id="jogo" type="text" placeholder="Ex: Flamengo x Palmeiras" required>
-      </div>
-      <div>
-        <label for="data">Data</label>
-        <input id="data" type="date" required>
-      </div>
-      <div>
-        <label for="hora">Hora</label>
-        <input id="hora" type="time" required>
-      </div>
-      <div>
-        <label for="odd">Odd</label>
-        <input id="odd" type="number" step="0.01" placeholder="1.85" required>
-      </div>
-      <div>
-        <label for="tipo">Tipo</label>
-        <input id="tipo" type="text" placeholder="Ex: Over 2.5" required>
-      </div>
-      <div>
-        <label for="entrada">Valor da Entrada</label>
-        <input id="entrada" type="number" step="0.01" placeholder="Ex: 100" required>
-      </div>
-      <div>
-        <label for="banca">Banca Inicial</label>
-        <input id="banca" type="number" step="0.01" placeholder="Ex: 1000" required>
-      </div>
-      <div>
-        <label for="meta">Meta</label>
-        <input id="meta" type="number" step="0.01" placeholder="Ex: 500" required>
-      </div>
+      <div><label>Jogo</label><input id="jogo" required></div>
+      <div><label>Data</label><input id="data" type="date" required></div>
+      <div><label>Hora</label><input id="hora" type="time" required></div>
+      <div><label>Odd</label><input id="odd" type="number" step="0.01" required></div>
+      <div><label>Tipo</label><input id="tipo" required></div>
+      <div><label>Valor da Entrada</label><input id="entrada" type="number" step="0.01" required></div>
+      <div><label>Banca Inicial</label><input id="banca" type="number" step="0.01" required></div>
+      <div><label>Meta</label><input id="meta" type="number" step="0.01" required></div>
+      <div><label>Imagem (opcional)</label><input id="imagem" type="file" accept="image/*"></div>
       <button type="submit">➕ Adicionar Entrada</button>
     </form>
 
-    <!-- Tabela -->
     <table id="tabelaEntradas">
       <thead>
-        <tr>
-          <th>Jogo</th><th>Data</th><th>Hora</th><th>Odd</th>
-          <th>Tipo</th><th>Entrada</th><th>Ganho</th><th>Ações</th>
-        </tr>
+        <tr><th>Jogo</th><th>Data</th><th>Hora</th><th>Odd</th><th>Tipo</th><th>Entrada</th><th>Ganho</th><th>Ações</th></tr>
       </thead>
       <tbody></tbody>
     </table>
@@ -277,8 +196,14 @@
     const barra = document.getElementById("barraProgresso");
     const bancaEl = document.getElementById("bancaAtual");
     const resetBtn = document.getElementById("resetarPainel");
+    const imagemInput = document.getElementById("imagem");
 
     let meta = 0, ganhoTotal = 0, banca = 0, inicializado = false;
+    let entradas = JSON.parse(localStorage.getItem("entradas")) || [];
+
+    function salvarEntradas() {
+      localStorage.setItem("entradas", JSON.stringify(entradas));
+    }
 
     function atualizarPainel() {
       const restante = Math.max(meta - ganhoTotal, 0);
@@ -286,6 +211,60 @@
       metaRestanteEl.textContent = `Faltam R$ ${restante.toFixed(2)}`;
       barra.style.width = `${Math.min(progresso, 100)}%`;
       bancaEl.textContent = `R$ ${banca.toFixed(2)}`;
+    }
+
+    function renderEntradas() {
+      tabela.innerHTML = "";
+      entradas.forEach((e, i) => {
+        const linha = document.createElement("tr");
+        linha.innerHTML = `
+          <td>${e.jogo}</td>
+          <td>${e.data}</td>
+          <td>${e.hora}</td>
+          <td>${e.odd.toFixed(2)}</td>
+          <td>${e.tipo}</td>
+          <td>R$ ${e.entrada.toFixed(2)}</td>
+          <td><strong style="color:green">R$ ${(e.entrada * e.odd).toFixed(2)}</strong></td>
+          <td>
+            <button class="btn btn-ganhou">✅</button>
+            <button class="btn btn-perdeu">❌</button>
+            <button class="btn btn-imagem">📷</button>
+            <button class="btn btn-remove">🗑️</button>
+          </td>
+        `;
+
+        linha.querySelector(".btn-ganhou").onclick = () => {
+          ganhoTotal += (e.entrada * e.odd) - e.entrada;
+          banca += (e.entrada * e.odd) - e.entrada;
+          atualizarPainel();
+          linha.style.background = "#dcfce7";
+          linha.querySelectorAll("button").forEach(b => b.disabled = true);
+        };
+
+        linha.querySelector(".btn-perdeu").onclick = () => {
+          banca -= e.entrada;
+          atualizarPainel();
+          linha.style.background = "#fee2e2";
+          linha.querySelectorAll("button").forEach(b => b.disabled = true);
+        };
+
+        linha.querySelector(".btn-imagem").onclick = () => {
+          if (e.imagem) {
+            const imgWin = window.open();
+            imgWin.document.write(`<img src="${e.imagem}" style="max-width:100%;border-radius:10px;">`);
+          } else {
+            alert("Nenhuma imagem adicionada para este jogo.");
+          }
+        };
+
+        linha.querySelector(".btn-remove").onclick = () => {
+          entradas.splice(i, 1);
+          salvarEntradas();
+          renderEntradas();
+        };
+
+        tabela.appendChild(linha);
+      });
     }
 
     form.addEventListener("submit", e => {
@@ -296,8 +275,6 @@
       const odd = parseFloat(oddEl.value);
       const tipo = tipoEl.value;
       const entrada = parseFloat(entradaEl.value);
-      const ganho = entrada * odd;
-
       const metaInput = metaElForm.valueAsNumber;
       const bancaInput = bancaElForm.valueAsNumber;
 
@@ -310,60 +287,42 @@
         inicializado = true;
       }
 
+      const reader = new FileReader();
+      const novoItem = { jogo, data, hora, odd, tipo, entrada, imagem: null };
+      if (imagemInput.files[0]) {
+        reader.onload = () => {
+          novoItem.imagem = reader.result;
+          entradas.push(novoItem);
+          salvarEntradas();
+          renderEntradas();
+        };
+        reader.readAsDataURL(imagemInput.files[0]);
+      } else {
+        entradas.push(novoItem);
+        salvarEntradas();
+        renderEntradas();
+      }
+
       atualizarPainel();
-
-      const linha = document.createElement("tr");
-      linha.innerHTML = `
-        <td>${jogo}</td>
-        <td>${data}</td>
-        <td>${hora}</td>
-        <td>${odd.toFixed(2)}</td>
-        <td>${tipo}</td>
-        <td>R$ ${entrada.toFixed(2)}</td>
-        <td><strong style="color:green">R$ ${ganho.toFixed(2)}</strong></td>
-        <td>
-          <button class="btn btn-ganhou">✅</button>
-          <button class="btn btn-perdeu">❌</button>
-          <button class="btn btn-remove">🗑️</button>
-        </td>
-      `;
-
-      linha.querySelector(".btn-ganhou").onclick = () => {
-        ganhoTotal += ganho - entrada;
-        banca += ganho - entrada;
-        atualizarPainel();
-        linha.style.background = "#dcfce7";
-        linha.querySelectorAll("button").forEach(b => b.disabled = true);
-      };
-
-      linha.querySelector(".btn-perdeu").onclick = () => {
-        banca -= entrada;
-        atualizarPainel();
-        linha.style.background = "#fee2e2";
-        linha.querySelectorAll("button").forEach(b => b.disabled = true);
-      };
-
-      linha.querySelector(".btn-remove").onclick = () => linha.remove();
-
-      tabela.appendChild(linha);
       form.reset();
     });
 
     resetBtn.onclick = () => {
-      tabela.innerHTML = "";
-      meta = 0;
-      ganhoTotal = 0;
-      banca = 0;
-      inicializado = false;
-      metaEl.textContent = "R$ 0,00";
-      bancaEl.textContent = "R$ 0,00";
-      metaRestanteEl.textContent = "Faltam R$ 0,00";
-      barra.style.width = "0%";
-      document.getElementById("meta").disabled = false;
-      document.getElementById("banca").disabled = false;
+      if (confirm("Deseja realmente resetar tudo?")) {
+        entradas = [];
+        localStorage.clear();
+        meta = ganhoTotal = banca = 0;
+        inicializado = false;
+        metaEl.textContent = "R$ 0,00";
+        bancaEl.textContent = "R$ 0,00";
+        metaRestanteEl.textContent = "Faltam R$ 0,00";
+        barra.style.width = "0%";
+        document.getElementById("meta").disabled = false;
+        document.getElementById("banca").disabled = false;
+        renderEntradas();
+      }
     };
 
-    // simplificar IDs
     const jogoEl = document.getElementById("jogo");
     const dataEl = document.getElementById("data");
     const horaEl = document.getElementById("hora");
@@ -372,6 +331,8 @@
     const entradaEl = document.getElementById("entrada");
     const metaElForm = document.getElementById("meta");
     const bancaElForm = document.getElementById("banca");
+
+    renderEntradas();
   </script>
 </body>
 </html>
