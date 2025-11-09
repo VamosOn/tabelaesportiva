@@ -67,7 +67,6 @@
     transition: width 0.4s ease;
   }
 
-  /* Form layout */
   form {
     background: white;
     border-radius: var(--radius);
@@ -95,7 +94,6 @@
     box-sizing: border-box;
   }
 
-  /* botão principal do formulário ocupa a linha inteira */
   button[type="submit"] {
     grid-column: 1 / -1;
     padding: 14px;
@@ -114,7 +112,6 @@
     background: #0056d2;
   }
 
-  /* Tabela */
   table {
     width: 100%;
     border-collapse: collapse;
@@ -139,7 +136,6 @@
     font-size: 14px;
   }
 
-  /* botões de ação na tabela — inline e compactos */
   .btn {
     display: inline-block;
     border: none;
@@ -226,7 +222,6 @@
         <label for="meta">Meta</label>
         <input id="meta" type="number" step="0.01" placeholder="Ex: 500" required>
       </div>
-      <!-- CAMPO DE IMAGEM -->
       <div>
         <label for="imagem">Imagem</label>
         <input id="imagem" type="file" accept="image/*">
@@ -247,7 +242,6 @@
   </main>
 
   <script>
-    // Elementos
     const form = document.getElementById("entradaForm");
     const tabela = document.querySelector("#tabelaEntradas tbody");
     const metaEl = document.getElementById("valorMeta");
@@ -256,20 +250,18 @@
     const bancaEl = document.getElementById("bancaAtual");
     const resetBtn = document.getElementById("resetarPainel");
     const imagemInput = document.getElementById("imagem");
+    const metaInputEl = document.getElementById("meta");
+    const bancaInputEl = document.getElementById("banca");
 
-    // estado (será carregado do localStorage)
     let entradas = [];
     let meta = 0, ganhoTotal = 0, banca = 0, inicializado = false;
-
     const STORAGE_KEY = "entradasEsportivas";
 
-    // salva tudo: entradas + meta + banca + ganhoTotal + inicializado
     function salvarTudo() {
       const payload = { entradas, meta, ganhoTotal, banca, inicializado };
       localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
     }
 
-    // carrega do storage (se houver) e define variáveis
     function carregarTudo() {
       const raw = localStorage.getItem(STORAGE_KEY);
       if (!raw) return;
@@ -311,13 +303,11 @@
           </td>
         `;
 
-        // botão Ver imagem (se existir)
         if (e.imagem) {
           const btnVer = linha.querySelector(".btn-imagem");
           btnVer.onclick = () => {
             const w = window.open();
             if (!w || w.closed || typeof w.closed == 'undefined') {
-              // fallback simples: abrir usando link
               const link = document.createElement('a');
               link.href = e.imagem;
               link.target = '_blank';
@@ -330,22 +320,20 @@
           };
         }
 
-        // marcar ganhou — desativa somente os botões de resultado/remover (imagem permanece funcional)
         linha.querySelector(".btn-ganhou").onclick = () => {
-          if (e.status) return; // já marcado
+          if (e.status) return;
           const ganho = (parseFloat(e.entrada) * parseFloat(e.odd)) - parseFloat(e.entrada);
           ganhoTotal += ganho;
           banca += ganho;
           e.status = "ganhou";
           atualizarPainel();
-          // desativa apenas os botões de resultado e remover
           const btns = linha.querySelectorAll(".btn-ganhou, .btn-perdeu, .btn-remove");
           btns.forEach(b => b.disabled = true);
           salvarTudo();
         };
 
         linha.querySelector(".btn-perdeu").onclick = () => {
-          if (e.status) return; // já marcado
+          if (e.status) return;
           banca -= parseFloat(e.entrada);
           e.status = "perdeu";
           atualizarPainel();
@@ -355,7 +343,6 @@
         };
 
         linha.querySelector(".btn-remove").onclick = () => {
-          // se a entrada já tinha sido marcada, ajustar ganhoTotal/banca ao remover
           if (e.status === "ganhou") {
             const ganho = (parseFloat(e.entrada) * parseFloat(e.odd)) - parseFloat(e.entrada);
             ganhoTotal -= ganho;
@@ -368,12 +355,8 @@
           renderizar();
         };
 
-        // estilizar linha se já tiver status
-        if (e.status === "ganhou") {
-          linha.style.background = "#dcfce7";
-        } else if (e.status === "perdeu") {
-          linha.style.background = "#fee2e2";
-        }
+        if (e.status === "ganhou") linha.style.background = "#dcfce7";
+        else if (e.status === "perdeu") linha.style.background = "#fee2e2";
 
         tabela.appendChild(linha);
       });
@@ -381,7 +364,6 @@
       atualizarPainel();
     }
 
-    // --- formulário ---
     form.addEventListener("submit", e => {
       e.preventDefault();
       const jogo = document.getElementById("jogo").value;
@@ -390,28 +372,24 @@
       const odd = parseFloat(document.getElementById("odd").value);
       const tipo = document.getElementById("tipo").value;
       const entradaValor = parseFloat(document.getElementById("entrada").value);
-      const metaInput = document.getElementById("meta").valueAsNumber;
-      const bancaInput = document.getElementById("banca").valueAsNumber;
+      const metaInput = metaInputEl.valueAsNumber;
+      const bancaInput = bancaInputEl.valueAsNumber;
 
-      // se ainda não inicializou, seta meta e banca e marca inicializado
       if (!inicializado) {
         meta = isFinite(metaInput) ? metaInput : 0;
         banca = isFinite(bancaInput) ? bancaInput : 0;
         inicializado = true;
+        metaInputEl.disabled = true;
+        bancaInputEl.disabled = true;
       }
 
       const novo = {
-        jogo,
-        data,
-        hora,
-        odd,
-        tipo,
+        jogo, data, hora, odd, tipo,
         entrada: entradaValor,
         imagem: null,
         status: null
       };
 
-      // ler imagem (se houver) como base64
       const file = imagemInput.files[0];
       if (file) {
         const reader = new FileReader();
@@ -433,7 +411,6 @@
       atualizarPainel();
     });
 
-    // reset geral
     resetBtn.onclick = () => {
       if (!confirm("Tem certeza que deseja resetar tudo?")) return;
       entradas = [];
@@ -442,13 +419,20 @@
       banca = 0;
       inicializado = false;
       localStorage.removeItem(STORAGE_KEY);
-      document.getElementById("meta").disabled = false;
-      document.getElementById("banca").disabled = false;
+      metaInputEl.disabled = false;
+      bancaInputEl.disabled = false;
       renderizar();
     };
 
-    // carregar e iniciar
     carregarTudo();
+
+    if (inicializado) {
+      metaInputEl.value = meta;
+      bancaInputEl.value = banca;
+      metaInputEl.disabled = true;
+      bancaInputEl.disabled = true;
+    }
+
     renderizar();
   </script>
 </body>
